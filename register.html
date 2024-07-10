@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Register</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="login.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-r from-blue-100 to-blue-200 min-h-screen flex flex-col items-center justify-center">
+    <nav class="w-full bg-blue-600 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">PrestaHub</h1>
+            <ul class="flex space-x-4">
+                <li><a href="entrega3.html" class="text-white text-lg">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg mt-8">
+        <div class="form-box">
+            <div class="form-value">
+                <form>
+                    <h2 class="text-3xl font-bold text-center mb-8 text-blue-600">Register</h2>
+                    <div class="inputbox mb-4"> 
+                        <ion-icon name="mail-outline" class="text-xl"></ion-icon> 
+                        <input type="email" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                        <label>Email</label>
+                    </div>
+                    <div class="inputbox mb-4"> 
+                        <ion-icon name="lock-closed-outline" class="text-xl"></ion-icon> 
+                        <input type="password" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"> 
+                        <label>Password</label> 
+                    </div>
+                    <div class="forget mb-4 flex justify-between items-center"> 
+                        <label><input type="checkbox" class="mr-2">Remember Me</label> 
+                        <a href="#" class="text-blue-600 hover:underline">Forgot Password</a> 
+                    </div> 
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-md font-bold hover:bg-blue-700 transition duration-200">Register</button>
+                    <div class="register mt-4 text-center">
+                        <p>Ya tienes cuenta? <a href="#" class="text-blue-600 hover:underline">Inicia sesión aquí</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

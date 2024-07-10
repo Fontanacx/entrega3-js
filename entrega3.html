@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Cuotas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-200">
+    <nav class="w-full bg-blue-600 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-white">PrestaHub</h1>
+            <ul class="flex space-x-4">
+                <li><a href="#" class="text-white text-lg">Home</a></li>
+                <li><a href="register.html" class="text-white text-lg">Register</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg mt-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">Simulador de Cuotas</h1>
+        <form id="simuladorForm" class="space-y-4">
+            <div>
+                <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <div>
+                <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <div>
+                <label for="monto" class="block text-sm font-medium text-gray-700">Monto a financiar:</label>
+                <input type="number" id="monto" name="monto" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <div>
+                <label for="cuotas" class="block text-sm font-medium text-gray-700">Cantidad de cuotas (3, 6, 12):</label>
+                <input type="number" id="cuotas" name="cuotas" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <button type="button" onclick="simuladorDeCuotas()" class="w-full bg-blue-600 text-white py-2 rounded-md font-bold hover:bg-blue-700 transition duration-200">Simular</button>
+        </form>
+        <div id="resultadoSimulacion" class="mt-4"></div>
+    </div>
+
+    <div class="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg mt-8">
+        <h2 class="text-xl font-bold text-center mb-4 text-blue-600">Clientes Registrados</h2>
+        <div id="listaClientes" class="space-y-2"></div>
+    </div>
+
+    <div class="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg mt-8">
+        <h2 class="text-xl font-bold text-center mb-4 text-blue-600">Buscar Cliente</h2>
+        <form id="busquedaForm" class="space-y-4">
+            <div>
+                <label for="nombreBusqueda" class="block text-sm font-medium text-gray-700">Nombre del cliente:</label>
+                <input type="text" id="nombreBusqueda" name="nombreBusqueda" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <button type="button" onclick="buscarCliente()" class="w-full bg-blue-600 text-white py-2 rounded-md font-bold hover:bg-blue-700 transition duration-200">Buscar</button>
+        </form>
+        <div id="resultadosBusqueda" class="mt-4 space-y-2"></div>
+    </div>
+    <script src="./js/entrega2.js"></script>
+</body>
+</html>
