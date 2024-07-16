@@ -1,4 +1,4 @@
-let clientes = cargarClientesDeStorage() || [];
+let clientes = [];
 
 function obtenerNombre() {
     return document.getElementById('nombre').value;
@@ -76,27 +76,17 @@ function simuladorDeCuotas() {
     let cuotas = obtenerCuotas();
     let interes = calcularInteres(monto, cuotas);
     let montoPorCuota = calcularCuotas(monto, cuotas, interes);
+    let totalPagar = monto + interes;
 
     let cliente = crearCliente(nombre, apellido, monto, cuotas, montoPorCuota, interes);
     clientes.push(cliente);
-    guardarClientesEnStorage();
 
     let resultadoDiv = document.getElementById('resultadoSimulacion');
-    resultadoDiv.innerHTML = `Hola <strong>${nombre} ${apellido}</strong>, el monto a pagar por cada cuota es: <strong>$${montoPorCuota.toFixed(2)}</strong>, con un interés total de: <strong>$${interes.toFixed(2)}</strong>`;
+    resultadoDiv.innerHTML = `Hola <strong>${nombre} ${apellido}</strong>, el monto a pagar por cada cuota es: <strong>$${montoPorCuota.toFixed(2)}</strong>, con un interés total de: <strong>$${interes.toFixed(2)}</strong>, la tasa de interés mensual es de: <strong>${(interes / monto * 100 / cuotas).toFixed(2)}%</strong> y el total a pagar es: <strong>$${totalPagar.toFixed(2)}</strong>`;
 
     mostrarClientes();
 
-
     document.getElementById('simuladorForm').reset();
-}
-
-function guardarClientesEnStorage() {
-    localStorage.setItem('clientes', JSON.stringify(clientes));
-}
-
-function cargarClientesDeStorage() {
-    let clientesGuardados = localStorage.getItem('clientes');
-    return clientesGuardados ? JSON.parse(clientesGuardados) : [];
 }
 
 // Mostrar los clientes al cargar la página
