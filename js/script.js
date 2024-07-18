@@ -72,22 +72,97 @@ function buscarCliente() {
 function simuladorDeCuotas() {
     let nombre = obtenerNombre();
     let apellido = obtenerApellido();
+    let moneda = document.getElementById('moneda').value;
     let monto = obtenerMonto();
     let cuotas = obtenerCuotas();
     let interes = calcularInteres(monto, cuotas);
     let montoPorCuota = calcularCuotas(monto, cuotas, interes);
     let totalPagar = monto + interes;
 
-    let cliente = crearCliente(nombre, apellido, monto, cuotas, montoPorCuota, interes);
+    let cliente = crearCliente(nombre, apellido, monto, cuotas, montoPorCuota, interes, moneda);
     clientes.push(cliente);
 
+    let dolarBlueVenta = parseFloat(document.getElementById('blueSell').textContent);
+    let totalPagarOtraMoneda, simboloMonedaOriginal, simboloMonedaConversion;
+
+    if (moneda === 'ARS') {
+        totalPagarOtraMoneda = totalPagar / dolarBlueVenta;
+        simboloMonedaOriginal = '$';
+        simboloMonedaConversion = 'USD';
+    } else {
+        totalPagarOtraMoneda = totalPagar * dolarBlueVenta;
+        simboloMonedaOriginal = 'USD';
+        simboloMonedaConversion = '$';
+    }
+
     let resultadoDiv = document.getElementById('resultadoSimulacion');
-    resultadoDiv.innerHTML = `Hola <strong>${nombre} ${apellido}</strong>, el monto a pagar por cada cuota es: <strong>$${montoPorCuota.toFixed(2)}</strong>, con un interés total de: <strong>$${interes.toFixed(2)}</strong>, la tasa de interés mensual es de: <strong>${(interes / monto * 100 / cuotas).toFixed(2)}%</strong> y el total a pagar es: <strong>$${totalPagar.toFixed(2)}</strong>`;
+    resultadoDiv.innerHTML = `
+        Hola <strong>${nombre} ${apellido}</strong>, 
+        el monto a pagar por cada cuota es: <strong>${simboloMonedaOriginal}${montoPorCuota.toFixed(2)}</strong>, 
+        con un interés total de: <strong>${simboloMonedaOriginal}${interes.toFixed(2)}</strong>, 
+        la tasa de interés mensual es de: <strong>${(interes / monto * 100 / cuotas).toFixed(2)}%</strong> 
+        y el total a pagar es: <strong>${simboloMonedaOriginal}${totalPagar.toFixed(2)}</strong> 
+        (${simboloMonedaConversion}${totalPagarOtraMoneda.toFixed(2)} al cambio actual del dólar blue)
+    `;
 
     mostrarClientes();
 
     document.getElementById('simuladorForm').reset();
 }
 
+function crearCliente(nombre, apellido, monto, cuotas, montoPorCuota, interes, moneda) {
+    return {
+        nombre,
+        apellido,
+        monto,
+        cuotas,
+        montoPorCuota,
+        interes,
+        moneda
+    };
+}
+
+function mostrarClientes() {
+    let listaClientes = document.getElementById('listaClientes');
+    listaClientes.innerHTML = "";
+    if (clientes.length > 0) {
+        clientes.forEach(cliente => {
+            let simboloMoneda = cliente.moneda === 'ARS' ? '$' : 'USD';
+            listaClientes.innerHTML += `
+                <div class="p-2 bg-gray-100 rounded-md">
+                    Nombre: <span class="font-semibold">${cliente.nombre} ${cliente.apellido}</span>, 
+                    Monto: ${simboloMoneda}${cliente.monto}, 
+                    Cuotas: ${cliente.cuotas}, 
+                    Monto por cuota: ${simboloMoneda}${cliente.montoPorCuota.toFixed(2)}, 
+                    Interés total: ${simboloMoneda}${cliente.interes.toFixed(2)}
+                </div>
+            `;
+        });
+    } else {
+        listaClientes.innerHTML = "<div class='text-gray-500'>No hay clientes registrados.</div>";
+    }
+}
+
 // Mostrar los clientes al cargar la página
 document.addEventListener('DOMContentLoaded', mostrarClientes);
+function obtenerDatosDelDolar() {
+    fetch('https://api.bluelytics.com.ar/v2/latest')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('blueBuy').textContent = data.blue.value_buy;
+            document.getElementById('blueSell').textContent = data.blue.value_sell;
+            document.getElementById('blueAvg').textContent = data.blue.value_avg;
+            
+            const lastUpdateDate = new Date(data.last_update);
+            document.getElementById('lastUpdate').textContent = `Última actualización: ${lastUpdateDate.toLocaleString()}`;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Llamar a la función cuando se carga la página
+document.addEventListener('DOMContentLoaded', function() {
+    mostrarClientes();
+    obtenerDatosDelDolar();
+    // Actualizar datos cada 5 minutos
+    setInterval(obtenerDatosDelDolar, 300000);
+});
