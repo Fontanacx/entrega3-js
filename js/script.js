@@ -166,3 +166,84 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualizar datos cada 5 minutos
     setInterval(obtenerDatosDelDolar, 300000);
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    
+    if(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Formulario enviado');
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            const user = {
+                username: username,
+                email: email,
+                password: password
+            };
+            
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            const userExists = users.some(u => u.username === username || u.email === email);
+            
+            if (userExists) {
+                alert('El nombre de usuario o email ya está registrado.');
+                return;
+            }
+            
+            users.push(user);
+            
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            if (rememberMe) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+            
+            alert('Registro exitoso! Serás redirigido a la página de login.');
+            
+            console.log('Redirigiendo a login.html');
+            window.location.href = '../pages/login.html';
+        });
+    } else {
+        console.error('El formulario de registro no fue encontrado');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    
+    const rememberedUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (rememberedUser) {
+        document.getElementById('email').value = rememberedUser.email;
+        document.getElementById('password').value = rememberedUser.password;
+        document.getElementById('rememberMe').checked = true;
+    }
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+            if (rememberMe) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+            } else {
+                localStorage.removeItem('currentUser');
+            }
+            alert('Login exitoso!');
+            window.location.href = '../index.html';
+        } else {
+            alert('Email o contraseña incorrectos.');
+        }
+    });
+});
